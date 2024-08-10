@@ -2,8 +2,8 @@ import express from 'express'
 import validateRequest from '../../middlewares/validateRequest'
 import Auth from '../../middlewares/auth'
 import { USER_ROLE } from '../user/user.constant'
-import { CarValidationSchema } from './car.validation'
-import { CarController } from './car.controller'
+import { BikeController } from './bike.controller'
+import { BikeValidationSchema } from './bike.validation'
 
 const router = express.Router()
 // admin
@@ -15,24 +15,18 @@ const router = express.Router()
 router.post(
   '/',
   Auth(USER_ROLE.admin),
-  validateRequest(CarValidationSchema.createCarValidationSchema),
-  CarController.createCar,
+  validateRequest(BikeValidationSchema.createBikeValidationSchema),
+  BikeController.createBike,
 )
-router.get('/', CarController.getAllCars)
-router.get('/:id', CarController.getSingleCar)
+router.get('/', BikeController.getAllBikes)
+router.get('/:id', BikeController.getSingleBike)
 
 router.put(
-  '/return',
+  '/:id',
   Auth(USER_ROLE.admin),
-  validateRequest(CarValidationSchema.returnCarValidationSchema),
-  CarController.updateReturnCarInfo,
+  validateRequest(BikeValidationSchema.updateBikeValidationSchema),
+  BikeController.updateBike,
 )
-router.put(
-  '/update-car/:id',
-  Auth(USER_ROLE.admin),
-  validateRequest(CarValidationSchema.updateCarValidationSchema),
-  CarController.updateCar,
-)
-router.delete('/:id', Auth(USER_ROLE.admin), CarController.deleteCar)
+router.delete('/:id', Auth(USER_ROLE.admin), BikeController.deleteBike)
 
-export const CarRoutes = router
+export const BikeRoutes = router

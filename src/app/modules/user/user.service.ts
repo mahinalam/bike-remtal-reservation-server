@@ -1,7 +1,6 @@
 import httpStatus from 'http-status'
 import AppError from '../../errors/appError'
 import { ILoginUser, IUser } from './user.interface'
-// import { User } from './user.model'
 import jwt from 'jsonwebtoken'
 import config from '../../config'
 import { User } from './user.model'
@@ -56,7 +55,34 @@ const loginUserIntoDB = async (payload: ILoginUser) => {
   return { result, accessToken }
 }
 
+const getMeFromDB = async (email: string, role: string) => {
+  let result = null
+  if (role === 'user') {
+    result = await User.findOne({ email })
+  }
+  if (role === 'admin') {
+    result = await User.findOne({ email })
+  }
+  return result
+}
+const updateGetMeIntoDB = async (
+  email: string,
+  role: string,
+  payload: Partial<IUser>,
+) => {
+  let result = null
+  if (role === 'user') {
+    result = await User.findOneAndUpdate({ email }, payload, { new: true })
+  }
+  if (role === 'admin') {
+    result = await User.findOneAndUpdate({ email }, payload, { new: true })
+  }
+  return result
+}
+
 export const UserServices = {
   createUserIntoDB,
   loginUserIntoDB,
+  getMeFromDB,
+  updateGetMeIntoDB,
 }

@@ -48,15 +48,15 @@ const userSchema = new Schema<IUser>(
   { timestamps: true },
 )
 
-// check if the user exists
-userSchema.statics.isUserExists = async function (email: string) {
-  return await User.findOne({ email })
-}
-// check if the user is already deleted
-userSchema.statics.isUserDeleted = async function (email: string) {
-  const user = await User.findOne({ email })
-  return user?.isDeleted
-}
+// // check if the user exists
+// userSchema.statics.isUserExists = async function (email: string) {
+//   return await User.findOne({ email })
+// }
+// // check if the user is already deleted
+// userSchema.statics.isUserDeleted = async function (email: string) {
+//   const user = await User.findOne({ email })
+//   return user?.isDeleted
+// }
 
 // matched password
 userSchema.statics.isPasswordMatched = async function (

@@ -10,7 +10,7 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCodeNumber: httpStatus.OK,
     success: true,
-    statusCode: 200,
+    statusCode: 201,
     message: 'User registered successfully',
     data: result,
   })
@@ -27,8 +27,33 @@ const loginUser: RequestHandler = catchAsync(async (req, res) => {
     data: result.result,
   })
 })
+const getMe: RequestHandler = catchAsync(async (req, res) => {
+  const { email, role } = req.user
+  const result = await UserServices.getMeFromDB(email, role)
+  sendResponse(res, {
+    statusCodeNumber: httpStatus.OK,
+    success: true,
+    statusCode: 200,
+    message: 'User profile retrieved successfully',
+    data: result,
+  })
+})
+const updateGetMe: RequestHandler = catchAsync(async (req, res) => {
+  const { email, role } = req.user
+  const payload = req.body
+  const result = await UserServices.updateGetMeIntoDB(email, role, payload)
+  sendResponse(res, {
+    statusCodeNumber: httpStatus.OK,
+    success: true,
+    statusCode: 200,
+    message: 'Profile updated successfully',
+    data: result,
+  })
+})
 
 export const UserController = {
   createUser,
   loginUser,
+  getMe,
+  updateGetMe,
 }

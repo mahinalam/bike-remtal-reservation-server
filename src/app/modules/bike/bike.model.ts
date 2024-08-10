@@ -1,8 +1,7 @@
 import { Schema, model } from 'mongoose'
-import { CarModel, ICar } from './car.interface'
-import { carStatus } from './car.constant'
+import { BikeModel, IBike } from './bike.interface'
 
-const carSchema = new Schema<ICar>(
+const bikeSchema = new Schema<IBike>(
   {
     name: {
       type: String,
@@ -14,24 +13,23 @@ const carSchema = new Schema<ICar>(
       required: true,
       trim: true,
     },
-    color: {
-      type: String,
+    cc: {
+      type: Number,
       required: true,
       trim: true,
     },
-    isElectric: {
-      type: Boolean,
+    year: {
+      type: Number,
       required: true,
       trim: true,
     },
-    status: {
+    model: {
       type: String,
       trim: true,
-      enum: carStatus,
-      default: 'available',
+      required: true,
     },
-    features: {
-      type: [String],
+    brand: {
+      type: String,
       required: true,
       trim: true,
     },
@@ -39,6 +37,11 @@ const carSchema = new Schema<ICar>(
       type: Number,
       required: true,
       trim: true,
+    },
+    isAvailable: {
+      type: Boolean,
+      trim: true,
+      default: true,
     },
     isDeleted: {
       type: Boolean,
@@ -50,17 +53,17 @@ const carSchema = new Schema<ICar>(
 )
 
 // query middleware
-carSchema.pre('find', function (next) {
+bikeSchema.pre('find', function (next) {
   this.where({ isDeleted: false })
   next()
 })
 
-// check if the service exists
-carSchema.statics.isCarExists = async function (
+// check if the bike exists
+bikeSchema.statics.isBikeExists = async function (
   id: string,
-): Promise<ICar | null> {
-  const isCarExists = await Car.findById(id)
-  return isCarExists
+): Promise<IBike | null> {
+  const isBikeExists = await Bike.findById(id)
+  return isBikeExists
 }
 
-export const Car = model<ICar, CarModel>('Car', carSchema)
+export const Bike = model<IBike, BikeModel>('Bike', bikeSchema)

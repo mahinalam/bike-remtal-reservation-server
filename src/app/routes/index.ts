@@ -1,21 +1,26 @@
 import { Router } from 'express'
+import { authRoutes } from '../modules/user/auth.route'
+import { BikeRoutes } from '../modules/bike/bike.route'
+import { RentalRoutes } from '../modules/rental/rental.route'
 import { userRoutes } from '../modules/user/user.route'
-import { CarRoutes } from '../modules/car/car.route'
-import { BookingsRoutes } from '../modules/booking/booking.route'
 const router = Router()
 
 const moduleRoutes = [
   {
     path: '/auth',
+    element: authRoutes,
+  },
+  {
+    path: '/users',
     element: userRoutes,
   },
   {
-    path: '/cars',
-    element: CarRoutes,
+    path: '/bikes',
+    element: BikeRoutes,
   },
   {
-    path: '/bookings',
-    element: BookingsRoutes,
+    path: '/rentals',
+    element: RentalRoutes,
   },
 ]
 

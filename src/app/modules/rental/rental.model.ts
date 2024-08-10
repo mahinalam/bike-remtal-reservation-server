@@ -1,34 +1,29 @@
 import { Schema, model } from 'mongoose'
-import { BookingModel, IBooking } from './booking.interface'
+import { IRental, RentalModel } from './rental.interface'
 
-const bookingsSchema = new Schema<IBooking>(
+const rentalSchema = new Schema<IRental>(
   {
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       required: true,
       trim: true,
       ref: 'User',
     },
-    car: {
+    bikeId: {
       type: Schema.Types.ObjectId,
       required: true,
       trim: true,
-      ref: 'Car',
+      ref: 'Bike',
     },
     startTime: {
       type: String,
       required: true,
       trim: true,
     },
-    endTime: {
+    returnTime: {
       type: String,
       trim: true,
       default: null,
-    },
-    date: {
-      type: String,
-      required: true,
-      trim: true,
     },
     totalCost: {
       type: Number,
@@ -40,22 +35,27 @@ const bookingsSchema = new Schema<IBooking>(
       trim: true,
       default: false,
     },
+    isReturned: {
+      type: Boolean,
+      trim: true,
+      default: false,
+    },
   },
   { timestamps: true },
 )
 
 // query middleware
-bookingsSchema.pre('find', function (next) {
+rentalSchema.pre('find', function (next) {
   this.where({ isDeleted: false })
   next()
 })
 
-// check if the booking exists
-bookingsSchema.statics.isBookingExists = async function (
+// check if the rental exists
+rentalSchema.statics.isRentalExists = async function (
   id: string,
-): Promise<IBooking | null> {
-  const isBookingExists = await Booking.findById(id)
-  return isBookingExists
+): Promise<IRental | null> {
+  const isRentalExists = await Rental.findById(id)
+  return isRentalExists
 }
 
-export const Booking = model<IBooking, BookingModel>('Booking', bookingsSchema)
+export const Rental = model<IRental, RentalModel>('Rental', rentalSchema)

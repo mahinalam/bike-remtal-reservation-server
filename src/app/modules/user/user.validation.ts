@@ -41,7 +41,21 @@ const loginValidationSchema = z.object({
   }),
 })
 
+const updateProfileValidationSchema = z.object({
+  body: z.object({
+    name: z.string().min(1, 'Name is required').optional(),
+    email: z.string().email('Invalid email format').optional(),
+    phone: z
+      .string()
+      .min(10, 'Phone number must be at least 10 digits')
+      .max(15, 'Phone number must be at most 15 digits')
+      .optional(),
+    address: z.string().min(1, 'Address is required').optional(),
+  }),
+})
+
 export const UserValidationSchema = {
   createUserValidationSchema,
   loginValidationSchema,
+  updateProfileValidationSchema,
 }
